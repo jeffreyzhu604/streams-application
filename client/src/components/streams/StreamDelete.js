@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Modal from '../Modal';
 import history from '../../History';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { deleteStream, fetchStream } from '../../actions';
 
-class StreamDelete extends React.Component {
+class StreamDelete extends Component {
     componentDidMount() {
         this.props.fetchStream(this.props.match.params.id);
     }
@@ -46,9 +46,9 @@ class StreamDelete extends React.Component {
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
     return {
-        currentStream: state.stream[ownProps.match.params.id]
+        currentStream: state.stream.currentStream[0]
     }
 }
 

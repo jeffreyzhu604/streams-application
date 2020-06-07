@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import {
     CREATE_STREAM, 
     FETCH_STREAMS, 
@@ -7,18 +6,23 @@ import {
     DELETE_STREAM
 } from '../actions/types';
 
-export default (state = {}, action) => {
+const INITIAL_STATE = {
+    dbStreams: {},
+    currentStream: {}
+};
+
+export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case FETCH_STREAM:
-            return {...state, [action.payload.id]: action.payload};
+            return {...state, currentStream: action.payload};
         case FETCH_STREAMS:
-            return {...state, ..._.mapKeys(action.payload,'id')}; // Map the value of property id to be the key of new object
+            return {...state, dbStreams: action.payload}; // Map the value of property id to be the key of new object
         case CREATE_STREAM:
-            return {...state, [action.payload.id]: action.payload};
+            return {...state, dbStreams: action.payload};
         case EDIT_STREAM:
-            return {...state, [action.payload.id]: action.payload};
+            return {...state, dbStreams: action.payload};
         case DELETE_STREAM:
-            return _.omit(state, action.payload); // new object
+            return {...state, dbStreams: action.payload}; // new object
         default: 
             return state;
     }

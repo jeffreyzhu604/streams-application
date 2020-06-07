@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form'; // Field is an input component
                                                // reduxForm works like connect
 
-class StreamForm extends React.Component {
+class StreamForm extends Component {
     renderError({ error, touched}) {
         if (touched && error)
             return (
@@ -31,11 +31,15 @@ class StreamForm extends React.Component {
     }
 
     render() {
-        console.log(this.props); // redux-form properties     
+        console.log(this.props); // redux-form properties   
+        /*
+            <Field />: Component that lives inside your wrapped form component; use it to connect the 
+            input components to the redux-form logic
+        */  
         return (
             <form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
                 <Field name="title" component={this.renderInput} label="Enter title" />
-                <Field name="description" component={this.renderInput} label="Enter description" />
+                <Field name="stream_description" component={this.renderInput} label="Enter description" />
                 <button className="ui button primary">Submit</button>
             </form>
         );
@@ -56,7 +60,7 @@ const validate = (formValues) => {
         // if no title        
         errors.title = 'You must enter a title'
     }
-    if (!formValues.description) {
+    if (!formValues.stream_description) {
         // if no title        
         errors.description = 'You must enter a description'
     }
@@ -64,7 +68,12 @@ const validate = (formValues) => {
     return errors;
 };
 
+/*
+    reduxForm: A function that takes configuration object and returns a new function; use it to
+    wrap your form component and bind user interaction to dispatch of Redux actions
+*/
 export default reduxForm({
     form: 'streamForm',
-    validate: validate
+    validate: validate,
+    enableReinitialize: true
 })(StreamForm);

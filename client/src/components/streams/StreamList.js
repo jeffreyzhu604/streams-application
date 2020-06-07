@@ -1,23 +1,38 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchStreams } from '../../actions';
 
-class StreamList extends React.Component {
+class StreamList extends Component {
     componentDidMount() {
         console.log(this.props);
         this.props.fetchStreams();
     }
 
+    notEmpty = (object) => {
+        let count = 0;
+        if (object) {
+            for (let key in object[0]) {
+                if (object[0][key]) 
+                    count = 1;
+                if (count == 1)
+                    return true;
+            }            
+        }
+        return false;
+    }
+
     renderAdmin = (stream) => {
-        if (stream.userId == this.props.currentUserId) {
-            return (
-                <div className="right floated content">
-                    <Link to={`/streams/edit/${stream.id}`} className="ui button primary">Edit</Link>               
-                    <Link to={`/streams/delete/${stream.id}`} className="ui button negavtive">Delete</Link>               
-                </div>
-            );
-        } 
+        if (this.notEmpty(this.props.currentUserId) && this.props.isSignedIn) {
+            if (stream.user_id == this.props.currentUserId[0].uid) {
+                return (
+                    <div className="right floated content">
+                        <Link to={`/streams/edit/${stream.sid}`} className="ui button primary">Edit</Link>               
+                        <Link to={`/streams/delete/${stream.sid}`} className="ui button negative">Delete</Link>               
+                    </div>
+                );
+            }             
+        }
     }
 
     renderCreate = () => {
@@ -36,12 +51,12 @@ class StreamList extends React.Component {
     renderList = () => {
         return this.props.streams.map((stream) => {
             return (
-                <div className="ui item" key={stream.id}>
+                <div className="ui item" key={stream.sid}>
                     {this.renderAdmin(stream)}
                     <i className="large middle aligned icon camera" />
                     <div className="content">
-                        <Link to={`/streams/${stream.id}`} className="header">{stream.title}</Link>
-                        <div className="description">{stream.description}</div>
+                        <Link to={`/streams/${stream.sid}`} className="header">{stream.title}</Link>
+                        <div className="description">{stream.stream_description}</div>
                     </div>
                 </div>
             ); 
@@ -64,8 +79,8 @@ class StreamList extends React.Component {
 const mapStateToProps = (state) => {
     console.log(state);
     return {
-        streams: Object.values(state.stream), // Takes the value from each key and forms an array
-        currentUserId: state.auth.userId,
+        streams: Object.values(state.stream.dbStreams), // Takes the value from each key and forms an array
+        currentUserId: state.auth.dbUserProfile,
         isSignedIn: state.auth.isSignedIn
     };
 };
