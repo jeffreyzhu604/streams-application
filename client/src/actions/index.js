@@ -142,10 +142,28 @@ export const fetchComments = () => async(dispatch, getState) => {
     history.push(`/streams/${currentStream[0].sid}`);
 };
 
-export const editComment = (id) => async(dispatch) => {
-
+export const editComment = (formValues) => async(dispatch, getState) => {
+    const { dbUserProfile } = getState().auth;
+    const { currentStream } = getState().stream;
+    const { currentComment } = getState().comment;
+    await stream.put(`http://localhost:8000/api/put/comments/${id}`, {
+        cid: currentComment[0].cid,
+        comment: formValues.comment,
+        username: dbUserProfile[0].username,
+        uid: dbUserProfile[0].uid,
+        sid: currentStream[0].sid
+    });
+    dispatch({ type: EDIT_COMMENTS, payload: response.data });
+    history.push(`/streams/${currentStream[0].sid}`);
 };
 
-export const deleteComment = (id) => async(dispatch) => {
-
-} 
+export const deleteComment = (id) => async(dispatch, getState) => {
+    const { dbUserProfile } = getState().auth;
+    const { currentStream } = getState().stream;
+    await streams.delete(`http://localhost:8000/api/delete/comments/${id}`, {
+        cid: id,
+        uid: dbUserProfile[0].uid
+    });
+    dispatch({ type: DELETE_COMMENT, payload: response.data });
+    history.push(`/streams/${currentStream[0].sic}`);
+}

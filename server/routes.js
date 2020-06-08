@@ -102,7 +102,21 @@ router.get('/api/get/comments', (req, res, next) => {
 })
 
 // Edit comment
+router.get('/api/put/comments/:id', (req, res, next) => {
+    const values = [req.body.cid, req.body.comment, req.body.username, req.body.user_id, req.body.stream_id];
+    pool.query(`UPDATE comments SET comment=$1, date_created=NOW()
+                WHERE cid=$2 AND username=$3 AND user_id=$4 AND stream_id=$5`, (q_err, q_res) => {
+                    if (q_err) return next(q_err);
+                    res.json(q_res.rows);
+                })
+})
 
 // Delete comment
-
-module.exports = router; 
+router.delete('/api/delete/comments/:id', (req, res, next) => {
+    const values = [req.params.cid, req.params.uid];
+    pool.query(`DELETE FROM comments WHERE cid=$1 AND uid=$2`, values, (q_err, q_res) => {
+        if (q_err) return next(q_err);
+        res.json(q_res.rows);
+    })
+})
+module.exports = router;
