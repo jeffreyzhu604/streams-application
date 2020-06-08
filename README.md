@@ -5,7 +5,7 @@
 # Technology Stack
 - React
 - Redux
-- Express
+- Node.js & Express.js
 - PostgreSQL
 
 # Learning Outcome
