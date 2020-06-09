@@ -28,9 +28,11 @@ class CommentForm extends Component {
 
     render() {
         return (
-            <form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
-                <Field name="comment" component={this.renderInput} />
-                <button className="ui button primary">Post Comment</button>
+            <form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui reply form error">
+                <Field name="comment" component={this.renderInput} className="field" />
+                <button className="ui blue labeled submit icon button">
+                    <i className="icon edit"></i>Add Reply
+                </button>
             </form>
         );
     }

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import flv from 'flv.js';
 import { connect} from 'react-redux';
 import { fetchStream } from '../../actions';
+import CommentList from '../comments/CommentList';
+
 
 class StreamShow extends Component {
     constructor(props) {
@@ -35,6 +37,14 @@ class StreamShow extends Component {
         this.player.load();    
     }
 
+    /*
+        Problem: 
+        - CommentList component relies on the data that is acquired when the 
+        StreamShow component calls on the action creator fetchStream
+        - fetchStream updates the Redux store with the current stream, however, this
+        update is completed AFTER CommentList is created. This creates the problem I 
+        have now, I have undefined values since the Redux store has not been updated
+    */
     renderStream() {
         if (this.props.stream) {
             const { title, description } = this.props.stream
@@ -43,6 +53,7 @@ class StreamShow extends Component {
                     <video ref={this.videoRef} style={{width: '100%'}} controls={true} />
                     <h1>{title}</h1>
                     <h5>{description}</h5>
+                    <CommentList />
                 </div>
             );            
         }
@@ -60,6 +71,7 @@ class StreamShow extends Component {
 }
 
 const mapStateToProps = (state) => {
+    console.log(state.stream.currentStream)
     return {
         stream: state.stream.currentStream
     }

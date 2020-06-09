@@ -75,12 +75,23 @@ router.get('/api/get/userprofilefromdb', (req, res, next) => {
 
 // Create comment
 router.post('/api/post/comment', (req, res, next) => {
-    const values = [req.body.comment, req.body.username, req.body.uid, req.body.sid];
-    pool.query(`INSERT INTO comments(comment, username, user_id, stream_id, date_created)
-                VALUES($1, $2, $3, $4, NOW())`, values, (q_err, q_res) => {
-                    if (q_err) return next(q_err);
-                    res.json(q_res.rows);
-                })
+    if (req.body.username && req.body.uid) {
+        const values = [req.body.comment, req.body.username, req.body.uid, req.body.sid];
+        pool.query(`INSERT INTO comments(comment, username, user_id, stream_id, date_created)
+                    VALUES($1, $2, $3, $4, NOW())`, values, (q_err, q_res) => {
+                        if (q_err) return next(q_err);
+                        res.json(q_res.rows);
+                    })        
+    } else {
+        const values = [req.body.comment, req.body.sid];
+        pool.query(`INSERT INTO comments(comment, stream_id, date_created)
+                    VALUES($1, $2, NOW())`, values, (q_err, q_res) => {
+                        if (q_err) return next(q_err);
+                        res.json(q_res.rows);
+                    })        
+    }
+
+
 })
 
 // Fetch comment
@@ -95,7 +106,7 @@ router.post('/api/get/comment/:id', (req, res, next) => {
 // Fetch comments
 router.get('/api/get/comments', (req, res, next) => {
     const values = [req.body.sid];
-    pool.query('SELECT * FROM comments WHERE sid=$1 ORDER BY date_created DESC', values, (q_err, q_res) => {
+    pool.query('SELECT * FROM comments WHERE stream_id=$1 ORDER BY date_created DESC', values, (q_err, q_res) => {
         if (q_err) return next(q_err);
         res.json(q_res.rows);
     })

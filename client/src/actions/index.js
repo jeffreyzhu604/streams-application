@@ -14,7 +14,7 @@ import {
     CREATE_COMMENT,
     FETCH_COMMENT,
     FETCH_COMMENTS,
-    EDIT_COMMENTS,
+    EDIT_COMMENT,
     DELETE_COMMENT
 } from './types';
 import streams from '../api/streams';
@@ -110,22 +110,25 @@ export const deleteStream = (id) => async (dispatch) => {
 
 // Comments action creator
 
-export const createComment = (formValues) => async(dispatch, getState) => {
+export const createComment = (id, formValues) => async(dispatch, getState) => {
     const { dbUserProfile } = getState().auth;
-    const { currentStream } = getState().stream;
-
-    await streams.post(`http://localhost:8000/api/post/comment`, {
-        comment: formValues.comment,
-        username: dbUserProfile[0].username,
-        uid: dbUserProfile[0].uid,
-        stream_id: currentStream[0].sid
-    });
+    let values = {};
+    if (dbUserProfile) {
+        values.comment = formValues.comment;
+        values.username = dbUserProfile[0].username;
+        values.uid = dbUserProfile[0].uid;
+        values.sid = id;
+    } else {
+        values.comment = formValues.comment;        
+        values.sid = id;
+    }
+    const response = await streams.post(`http://localhost:8000/api/post/comment`, values);
     dispatch({ type: CREATE_COMMENT, payload: response.data});
-    history.push(`/streams/${currentStream[0].sid}`);
+    history.push(`/streams/${id}`);
 };
 
 export const fetchComment = (id) => async(dispatch) => {
-    await stream.post(`http://localhost:8000/api/get/comment/${id}`, {
+    const response = await streams.post(`http://localhost:8000/api/get/comment/${id}`, {
         cid: id
     });
     dispatch({ type: FETCH_COMMENT, payload: response.data });
@@ -133,9 +136,10 @@ export const fetchComment = (id) => async(dispatch) => {
 };
 
 // Sort by highest upvotes and order by date (descending)
-export const fetchComments = () => async(dispatch, getState) => {
-    const { currentStream } = getState().stream;
-    await stream.get('http://localhost:8000/api/get/comments', {
+export const fetchComments = (currentStream) => async(dispatch, getState) => {
+    if (!currentStream)
+        return;
+    const response = await streams.get('http://localhost:8000/api/get/comments', {
         sid: currentStream[0].sid
     });
     dispatch({ type: FETCH_COMMENTS, payload: response.data });
@@ -146,21 +150,21 @@ export const editComment = (formValues) => async(dispatch, getState) => {
     const { dbUserProfile } = getState().auth;
     const { currentStream } = getState().stream;
     const { currentComment } = getState().comment;
-    await stream.put(`http://localhost:8000/api/put/comments/${id}`, {
+    const response = await streams.put(`http://localhost:8000/api/put/comments/${currentComment[0].cid}`, {
         cid: currentComment[0].cid,
         comment: formValues.comment,
         username: dbUserProfile[0].username,
         uid: dbUserProfile[0].uid,
         sid: currentStream[0].sid
     });
-    dispatch({ type: EDIT_COMMENTS, payload: response.data });
+    dispatch({ type: EDIT_COMMENT, payload: response.data });
     history.push(`/streams/${currentStream[0].sid}`);
 };
 
 export const deleteComment = (id) => async(dispatch, getState) => {
     const { dbUserProfile } = getState().auth;
     const { currentStream } = getState().stream;
-    await streams.delete(`http://localhost:8000/api/delete/comments/${id}`, {
+    const response = await streams.delete(`http://localhost:8000/api/delete/comments/${id}`, {
         cid: id,
         uid: dbUserProfile[0].uid
     });
