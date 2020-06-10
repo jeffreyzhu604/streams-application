@@ -139,7 +139,9 @@ export const fetchComment = (id) => async(dispatch) => {
 export const fetchComments = (currentStream) => async(dispatch, getState) => {
     if (!currentStream)
         return;
-    const response = await streams.get('http://localhost:8000/api/get/comments', {
+    console.log(currentStream[0].sid);
+    // Updated to post request since it required a body
+    const response = await streams.post('http://localhost:8000/api/get/comments', {
         sid: currentStream[0].sid
     });
     dispatch({ type: FETCH_COMMENTS, payload: response.data });

@@ -10,10 +10,9 @@ import {
     the comments for a post
 */
 class CommentList extends Component {
-    fetchComments = (currentStream) => {
-        this.props.fetchComments(currentStream).then(() => {
-            this.renderComments();
-        })
+    
+    componentDidMount() {
+        this.props.fetchComments(this.props.currentStream);
     }
 
     renderCreate = () => {
@@ -60,7 +59,7 @@ class CommentList extends Component {
         return (
             <div className="ui threaded comments">
                 <h3 className="ui dividing header">Comments</h3>
-                {this.fetchComments(this.props.currentStream)}
+                {this.renderComments()}
                 <Link to={'/streams/comments/new'} className="ui blue labeled submit icon button">
                     <i className="icon edit"></i>Comment
                 </Link>

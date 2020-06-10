@@ -104,8 +104,9 @@ router.post('/api/get/comment/:id', (req, res, next) => {
 })
 
 // Fetch comments
-router.get('/api/get/comments', (req, res, next) => {
+router.post('/api/get/comments', (req, res, next) => {
     const values = [req.body.sid];
+    console.log(req.body);
     pool.query('SELECT * FROM comments WHERE stream_id=$1 ORDER BY date_created DESC', values, (q_err, q_res) => {
         if (q_err) return next(q_err);
         res.json(q_res.rows);

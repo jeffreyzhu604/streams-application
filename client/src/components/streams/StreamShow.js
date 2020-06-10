@@ -3,6 +3,7 @@ import flv from 'flv.js';
 import { connect} from 'react-redux';
 import { fetchStream } from '../../actions';
 import CommentList from '../comments/CommentList';
+import { notEmpty } from '../../util/NotEmpty.js'
 
 
 class StreamShow extends Component {
@@ -53,7 +54,7 @@ class StreamShow extends Component {
                     <video ref={this.videoRef} style={{width: '100%'}} controls={true} />
                     <h1>{title}</h1>
                     <h5>{description}</h5>
-                    <CommentList />
+                    {notEmpty(this.props.stream) ? <CommentList /> : <div></div>}
                 </div>
             );            
         }

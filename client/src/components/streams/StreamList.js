@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchStreams } from '../../actions';
+import { notEmpty } from '../../util/NotEmpty.js';
 
 class StreamList extends Component {
     componentDidMount() {
@@ -9,21 +10,8 @@ class StreamList extends Component {
         this.props.fetchStreams();
     }
 
-    notEmpty = (object) => {
-        let count = 0;
-        if (object) {
-            for (let key in object[0]) {
-                if (object[0][key]) 
-                    count = 1;
-                if (count == 1)
-                    return true;
-            }            
-        }
-        return false;
-    }
-
     renderAdmin = (stream) => {
-        if (this.notEmpty(this.props.currentUserId) && this.props.isSignedIn) {
+        if (notEmpty(this.props.currentUserId) && this.props.isSignedIn) {
             if (stream.user_id == this.props.currentUserId[0].uid) {
                 return (
                     <div className="right floated content">
