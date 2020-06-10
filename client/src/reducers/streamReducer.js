@@ -3,7 +3,8 @@ import {
     FETCH_STREAMS, 
     FETCH_STREAM, 
     EDIT_STREAM, 
-    DELETE_STREAM
+    DELETE_STREAM,
+    CLEAR_CURRENT_STREAM
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -23,6 +24,8 @@ export default (state = INITIAL_STATE, action) => {
             return {...state, dbStreams: action.payload};
         case DELETE_STREAM:
             return {...state, dbStreams: action.payload}; // new object
+        case CLEAR_CURRENT_STREAM:
+            return {...state, currentStream: null};
         default: 
             return state;
     }

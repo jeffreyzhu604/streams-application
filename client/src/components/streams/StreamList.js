@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchStreams } from '../../actions';
+import { fetchStreams, clearCurrentStream } from '../../actions';
 import { notEmpty } from '../../util/NotEmpty.js';
 
 class StreamList extends Component {
     componentDidMount() {
         console.log(this.props);
+        this.props.clearCurrentStream();
         this.props.fetchStreams();
     }
 
@@ -74,5 +75,6 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, {
-    fetchStreams: fetchStreams
+    fetchStreams,
+    clearCurrentStream
 }) (StreamList);

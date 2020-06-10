@@ -11,6 +11,7 @@ import {
     FETCH_STREAM, 
     EDIT_STREAM, 
     DELETE_STREAM,
+    CLEAR_CURRENT_STREAM,
     CREATE_COMMENT,
     FETCH_COMMENT,
     FETCH_COMMENTS,
@@ -107,6 +108,10 @@ export const deleteStream = (id) => async (dispatch) => {
     dispatch({ type: DELETE_STREAM, payload: id });
     history.push('/');
 };
+
+export const clearCurrentStream = () => (dispatch) => {
+    dispatch({ type: CLEAR_CURRENT_STREAM });
+}
 
 // Comments action creator
 
