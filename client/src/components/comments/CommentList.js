@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { 
     fetchComments
 } from '../../actions';
+import CommentCreate from '../comments/CommentCreate';
 
 /*
     Class-based components since you want to fetch all
@@ -29,7 +30,6 @@ class CommentList extends Component {
         TO DO: 
         - Create profile page for users, that way the comment displays the 
         image of the user
-        - Annonymous comments
         - 
     */
     renderComments = () => {
@@ -39,7 +39,7 @@ class CommentList extends Component {
                 <div className="comment">
                     {/* empty avatar for now */}
                     <div className="content">
-                        <a className="author">{comment.username}</a>
+                        <a className="author">{comment.username ? comment.username : "annonymous"}</a>
                         <div className="metadata">
                             <span className="date">{comment.date_created}</span>
                         </div>
@@ -60,9 +60,7 @@ class CommentList extends Component {
             <div className="ui threaded comments">
                 <h3 className="ui dividing header">Comments</h3>
                 {this.renderComments()}
-                <Link to={'/streams/comments/new'} className="ui blue labeled submit icon button">
-                    <i className="icon edit"></i>Comment
-                </Link>
+                <CommentCreate />
             </div>
         )
     }
@@ -73,7 +71,7 @@ const mapStateToProps = (state) => {
     return {
         currentStream: state.stream.currentStream,
         comments: Object.values(state.comment.dbComments),
-        isSignedIn: state.auth.isSignedIn
+        isSignedIn: state.auth.isSignedIn,
     }
 }
 

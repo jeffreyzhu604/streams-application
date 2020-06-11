@@ -12,6 +12,7 @@ import {
     EDIT_STREAM, 
     DELETE_STREAM,
     CLEAR_CURRENT_STREAM,
+    CLEAR_FORM,
     CREATE_COMMENT,
     FETCH_COMMENT,
     FETCH_COMMENTS,
@@ -113,6 +114,11 @@ export const clearCurrentStream = () => (dispatch) => {
     dispatch({ type: CLEAR_CURRENT_STREAM });
 }
 
+// Form action creators
+export const clearForm = () => (dispatch) => {
+    dispatch({ type: CLEAR_FORM })
+}
+
 // Comments action creator
 
 export const createComment = (id, formValues) => async(dispatch, getState) => {
@@ -129,7 +135,7 @@ export const createComment = (id, formValues) => async(dispatch, getState) => {
     }
     const response = await streams.post(`http://localhost:8000/api/post/comment`, values);
     dispatch({ type: CREATE_COMMENT, payload: response.data});
-    history.push(`/streams/${id}`);
+    history.replace(`/streams/${id}`);
 };
 
 export const fetchComment = (id) => async(dispatch) => {

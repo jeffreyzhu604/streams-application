@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createComment } from '../../actions';
+import { createComment, fetchComments } from '../../actions';
 import CommentForm from '../comments/CommentForm';
 
 class CommentCreate extends Component {
+    // TO DO: preventDefault() to stop page refresh
     onSubmit = (formValues) => {
-        this.props.createComment(this.props.currentStream.sid, formValues);
+        this.props.createComment(this.props.currentStream[0].sid, formValues).then(() => {
+            console.log(this.props.currentStream);
+            this.props.fetchComments(this.props.currentStream)
+        })
     }
     
     render() {
@@ -18,9 +22,10 @@ class CommentCreate extends Component {
 }
 const mapStateToProps = (state) => {
     return {
-        currentStream: state.stream.currentStream[0]
+        currentStream: state.stream.currentStream
     };
 }
 export default connect(mapStateToProps, {
-    createComment
+    createComment,
+    fetchComments
 })(CommentCreate)
