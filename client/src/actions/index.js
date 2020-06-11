@@ -12,7 +12,6 @@ import {
     EDIT_STREAM, 
     DELETE_STREAM,
     CLEAR_CURRENT_STREAM,
-    CLEAR_FORM,
     CREATE_COMMENT,
     FETCH_COMMENT,
     FETCH_COMMENTS,
@@ -112,11 +111,6 @@ export const deleteStream = (id) => async (dispatch) => {
 
 export const clearCurrentStream = () => (dispatch) => {
     dispatch({ type: CLEAR_CURRENT_STREAM });
-}
-
-// Form action creators
-export const clearForm = () => (dispatch) => {
-    dispatch({ type: CLEAR_FORM })
 }
 
 // Comments action creator

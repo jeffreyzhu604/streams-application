@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reset, reduxForm } from 'redux-form';
 
 class CommentForm extends Component {
     renderError({ error, touched }) {
@@ -38,6 +38,11 @@ class CommentForm extends Component {
     }
 }
 
+// Reseting the forms after submit
+const afterSubmit = (result, dispatch) => {
+    dispatch(reset('commentForm'));
+}
+
 const validate = (formValues) => {
     const errors = {};
     if (!formValues.comment)
@@ -48,5 +53,6 @@ const validate = (formValues) => {
 export default reduxForm({
     form: 'commentForm',
     validate: validate,
-    enableReinitialize: true
+    enableReinitialize: true,
+    onSubmitSuccess: afterSubmit
 })(CommentForm);
