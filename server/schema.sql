@@ -22,5 +22,6 @@ CREATE TABLE comments (
     username VARCHAR REFERENCES users(username),
     user_id INT REFERENCES users(uid),
     stream_id INT REFERENCES streams(sid),
+    cid_reference INT REFERENCES comments(cid),
     date_created TIMESTAMP
 );

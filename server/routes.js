@@ -74,24 +74,31 @@ router.get('/api/get/userprofilefromdb', (req, res, next) => {
 // Comment routes
 
 // Create comment
+// TO DO: Refactor this portion
 router.post('/api/post/comment', (req, res, next) => {
     if (req.body.username && req.body.uid) {
         const values = [req.body.comment, req.body.username, req.body.uid, req.body.sid];
-        pool.query(`INSERT INTO comments(comment, username, user_id, stream_id, date_created)
-                    VALUES($1, $2, $3, $4, NOW())`, values, (q_err, q_res) => {
+        if (req.body.cid_reference)
+            values.push(req.body.cid_reference);
+        else
+            values.push(null);
+        pool.query(`INSERT INTO comments(comment, username, user_id, stream_id, cid_reference, date_created)
+                    VALUES($1, $2, $3, $4, $5, NOW())`, values, (q_err, q_res) => {
                         if (q_err) return next(q_err);
                         res.json(q_res.rows);
                     })        
     } else {
         const values = [req.body.comment, req.body.sid];
-        pool.query(`INSERT INTO comments(comment, stream_id, date_created)
-                    VALUES($1, $2, NOW())`, values, (q_err, q_res) => {
+        if (req.body.cid_reference)
+            values.push(req.body.cid_reference);
+        else
+            values.push(null);        
+        pool.query(`INSERT INTO comments(comment, stream_id, cid_reference, date_created)
+                    VALUES($1, $2, $3, NOW())`, values, (q_err, q_res) => {
                         if (q_err) return next(q_err);
                         res.json(q_res.rows);
                     })        
     }
-
-
 })
 
 // Fetch comment

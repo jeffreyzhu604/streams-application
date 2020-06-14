@@ -115,21 +115,23 @@ export const clearCurrentStream = () => (dispatch) => {
 
 // Comments action creator
 
-export const createComment = (id, formValues) => async(dispatch, getState) => {
+export const createComment = (currentStream, formValues, currentComment=null) => async(dispatch, getState) => {
     const { dbUserProfile } = getState().auth;
     let values = {};
     if (dbUserProfile) {
         values.comment = formValues.comment;
         values.username = dbUserProfile[0].username;
         values.uid = dbUserProfile[0].uid;
-        values.sid = id;
+        values.sid = currentStream[0].sid;
     } else {
         values.comment = formValues.comment;        
-        values.sid = id;
+        values.sid = currentStream[0].sid;
     }
+    if (currentComment)
+        values.cid_reference = currentComment[0].cid;    
     const response = await streams.post(`http://localhost:8000/api/post/comment`, values);
     dispatch({ type: CREATE_COMMENT, payload: response.data});
-    history.replace(`/streams/${id}`);
+    history.replace(`/streams/${currentStream[0].cid}`);
 };
 
 export const fetchComment = (id) => async(dispatch) => {

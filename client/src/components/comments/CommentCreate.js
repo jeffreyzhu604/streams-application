@@ -6,7 +6,7 @@ import CommentForm from '../comments/CommentForm';
 class CommentCreate extends Component {
     // TO DO: preventDefault to prevent refresh
     onSubmit = (formValues) => {
-        this.props.createComment(this.props.currentStream[0].sid, formValues).then(() => {
+        this.props.createComment(this.props.currentStream, formValues).then(() => {
             console.log(this.props.currentStream);
             this.props.fetchComments(this.props.currentStream)
         })
