@@ -1,0 +1,63 @@
+Nested Comments Design:
+
+Comment Database Schema:
+- Adjacency List Pattern
+- https://stackoverflow.com/questions/47813609/postgresql-adjacency-list-query
+- https://stackoverflow.com/questions/51350908/recursive-query-for-hirarchical-data-based-on-adjacency-list
+
+Tasks:
+- Fetching comments
+- Post comments in any level of nested comments
+- Fetch nested comments for each comment
+
+
+1) Fetching comments - Complete
+
+2) Post comments in any level of nested comments
+
+- Each comment has a reply option
+- When you reply you are referencing the new comment to the parent comment
+    - Suppose for a specific stream, you only have one comment with cid=1 and 
+    secondary_comment_id=null. When an user comments on the first comment, the new 
+    comment will have cid=2 and secondary_comment_id=1 to indicate we are referencing 
+    comment with cid=1. Another user comments on the first one and that comment will 
+    have cid=3 and secondary_comment_id=1. If an user comments on
+    the comment with cid=3, then that comment will have cid=4
+    and secondary_comment_id=3.
+    - Comment tree for the example above:
+        - cid=1, secondary_comment_id=null
+            - cid=2, secondary_comment_id=1
+            - cid=3, secondary_comment_id=1
+                - cid=4, secondary_comment_id=3
+- In order to do the above, each reply would need access to the parent comment cid,
+we could have a parameter for the createComment action creator with a default value 
+of null, thus we have:
+    - createComment(currentStream, formValues, secondary_comment_id=null) for the function
+    signature
+    - The idea here is that if we hit reply, we pass in an extra parameter which is the 
+    parent comment cid to set the secondary_comment_id for the nested comment. Otherwise,
+    if the comment is top-level, the secondary_comment_id is set to null.
+- Can we use the same action creator and REST API that handles non-nested comments?
+    - No, but slight modifications would allow for it to work
+    - All top-level comments will have secondary_comment_id=null or in other words, all comments
+    are displayed linearly row by row.
+
+3) Fetch nested comments for each comment
+
+- Depth-first Search v.s. Breadth-first Search
+    - Here it makes sense to use BFS to get each level of comments and replies
+    - BFS is used again to get the nested comments for a specific comment
+- Ex:
+    TOP-LEVEL COMMENTS:
+        - Notice the s_cid is to represent the secondary_comment_id, where the top level
+        is set to null
+
+    [cid=1, s_cid=null] [cid=2, s_cid=null] [cid=3, s_cid=null] ... -> "Load more comments"
+            /         \
+    [cid=n+1,s_cid=1] [cid=n+1,s_cid=1] 
+            .               .
+            .               .
+            .               .
+            .               .
+            .               .
+            .               .       v "View replies"
