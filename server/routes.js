@@ -111,6 +111,7 @@ router.post('/api/get/comment/:id', (req, res, next) => {
 })
 
 // Fetch comments
+// TO DO: Use Postman to create multiple levels of nested comments
 router.post('/api/get/comments', (req, res, next) => {
     const values = [req.body.sid];
     console.log(req.body);

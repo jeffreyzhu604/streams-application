@@ -30,11 +30,13 @@ class CommentList extends Component {
         TO DO: 
         - Create profile page for users, that way the comment displays the 
         image of the user
-        - 
+        - Displaying nested comments:
+            - The nested comment is nested with a div with className="comments"
+            - 
     */
     renderComments = () => {
         return this.props.comments.map((comment) => {
-            console.log(comment)
+            console.log(comment.cid_reference);
             return (
                 <div className="comment">
                     {/* empty avatar for now */}

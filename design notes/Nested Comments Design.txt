@@ -4,6 +4,9 @@ Comment Database Schema:
 - Adjacency List Pattern
 - https://stackoverflow.com/questions/47813609/postgresql-adjacency-list-query
 - https://stackoverflow.com/questions/51350908/recursive-query-for-hirarchical-data-based-on-adjacency-list
+- https://www.postgresqltutorial.com/postgresql-recursive-query/
+- https://dzone.com/articles/understanding-recursive-queries-in-postgres
+
 
 Tasks:
 - Fetching comments
