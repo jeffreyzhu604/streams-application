@@ -42,7 +42,7 @@ WITH RECURSIVE nested_comments AS (
 	WHERE
         -- If cid=1, it prints comment with that id and everything that branches from it
         -- cid_reference IS NULL prints everything
-        cid_reference IS NULL
+        cid_reference IS NULL AND stream_id=$1
 	UNION
         -- recursive term
 		SELECT

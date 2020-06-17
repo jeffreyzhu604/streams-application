@@ -115,7 +115,42 @@ router.post('/api/get/comment/:id', (req, res, next) => {
 router.post('/api/get/comments', (req, res, next) => {
     const values = [req.body.sid];
     console.log(req.body);
-    pool.query('SELECT * FROM comments WHERE stream_id=$1 ORDER BY date_created DESC', values, (q_err, q_res) => {
+    pool.query(`
+                -- Query to obtain nested comments
+                WITH RECURSIVE nested_comments AS (
+                    -- non-recursive term
+                    SELECT
+                        cid,
+                        comment, 
+                        username,
+                        user_id,
+                        stream_id,
+                        cid_reference,
+                        date_created
+                    FROM
+                        comments 
+                    WHERE
+                        -- If cid=1, it prints comment with that id and everything that branches from it
+                        -- cid_reference IS NULL prints everything
+                        cid_reference IS NULL AND stream_id=$1
+                    UNION
+                        -- recursive term
+                        SELECT
+                            c.cid,
+                            c.comment,
+                            c.username,
+                            c.user_id,
+                            c.stream_id,
+                            c.cid_reference,
+                            c.date_created
+                        FROM
+                            comments c
+                        INNER JOIN nested_comments n_c ON n_c.cid = c.cid_reference
+                ) SELECT
+                    *
+                FROM
+                    nested_comments;        
+    `, values, (q_err, q_res) => {
         if (q_err) return next(q_err);
         res.json(q_res.rows);
     })

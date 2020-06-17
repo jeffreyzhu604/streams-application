@@ -50,6 +50,15 @@ of null, thus we have:
 - Depth-first Search v.s. Breadth-first Search
     - Here it makes sense to use BFS to get each level of comments and replies
     - BFS is used again to get the nested comments for a specific comment
+
+- Algorithm for displaying the comments:
+    - Information:
+        - Top level comments have cid_reference=null
+        - 
+    - Algorithm:
+        - If cid_reference=null, <div className="comment">
+        - 
+
 - Ex:
     TOP-LEVEL COMMENTS:
         - Notice the s_cid is to represent the secondary_comment_id, where the top level

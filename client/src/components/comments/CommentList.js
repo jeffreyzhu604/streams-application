@@ -5,6 +5,7 @@ import {
     fetchComments
 } from '../../actions';
 import CommentCreate from '../comments/CommentCreate';
+import Tree from '../Tree';
 
 /*
     Class-based components since you want to fetch all
@@ -34,26 +35,6 @@ class CommentList extends Component {
             - The nested comment is nested with a div with className="comments"
             - 
     */
-    renderComments = () => {
-        return this.props.comments.map((comment) => {
-            console.log(comment.cid_reference);
-            return (
-                <div className="comment">
-                    {/* empty avatar for now */}
-                    <div className="content">
-                        <a className="author">{comment.username ? comment.username : "annonymous"}</a>
-                        <div className="metadata">
-                            <span className="date">{comment.date_created}</span>
-                        </div>
-                        <div className="text">{comment.comment}</div>
-                        <div className="actions">
-                            <Link to={'/streams/comments/new'} className="reply">Reply</Link>
-                        </div>
-                    </div>
-                </div>
-            );
-        })
-    }
     
     // renderAdmin???
 
@@ -61,7 +42,7 @@ class CommentList extends Component {
         return (
             <div className="ui threaded comments">
                 <h3 className="ui dividing header">Comments</h3>
-                {this.renderComments()}
+                <Tree />
                 <CommentCreate />
             </div>
         )
