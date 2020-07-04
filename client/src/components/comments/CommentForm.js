@@ -52,7 +52,6 @@ const validate = (formValues) => {
 
 export default reduxForm({
     form: 'commentForm',
-    validate: validate,
     enableReinitialize: true,
     onSubmitSuccess: afterSubmit
 })(CommentForm);

@@ -16,7 +16,8 @@ import {
     FETCH_COMMENT,
     FETCH_COMMENTS,
     EDIT_COMMENT,
-    DELETE_COMMENT
+    DELETE_COMMENT,
+    REPLY_COMMENT
 } from './types';
 import streams from '../api/streams';
 import history from '../History';
@@ -114,8 +115,14 @@ export const clearCurrentStream = () => (dispatch) => {
 }
 
 // Comments action creator
+export const initiateReply = () => {
+    return {
+        type: REPLY_COMMENT
+    };
+}
 
 export const createComment = (currentStream, formValues, currentComment=null) => async(dispatch, getState) => {
+    console.log(currentComment);
     const { dbUserProfile } = getState().auth;
     let values = {};
     if (dbUserProfile) {
@@ -134,12 +141,12 @@ export const createComment = (currentStream, formValues, currentComment=null) =>
     history.replace(`/streams/${currentStream[0].cid}`);
 };
 
-export const fetchComment = (id) => async(dispatch) => {
-    const response = await streams.post(`http://localhost:8000/api/get/comment/${id}`, {
-        cid: id
+export const fetchComment = (cid, sid) => async(dispatch) => {
+    const response = await streams.post(`http://localhost:8000/api/get/comment/${cid}`, {
+        cid: cid
     });
     dispatch({ type: FETCH_COMMENT, payload: response.data });
-    history.push(`/streams/${id}`);
+    history.push(`/streams/${sid}`);
 };
 
 // Sort by highest upvotes and order by date (descending)

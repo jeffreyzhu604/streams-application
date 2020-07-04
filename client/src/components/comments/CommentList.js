@@ -17,16 +17,6 @@ class CommentList extends Component {
         this.props.fetchComments(this.props.currentStream);
     }
 
-    renderCreate = () => {
-        if (this.props.isSignedIn) {
-            return (
-                <div>
-
-                </div>
-            );
-        }
-    }
-
     /* 
         TO DO: 
         - Create profile page for users, that way the comment displays the 
