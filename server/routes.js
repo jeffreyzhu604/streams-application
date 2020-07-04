@@ -174,4 +174,12 @@ router.delete('/api/delete/comments/:id', (req, res, next) => {
         res.json(q_res.rows);
     })
 })
+
+router.delete('/api/delete/stream/:sid/comments', (req, res, next) => {
+    const values = [req.params.sid];
+    pool.query(`DELETE FROM comments WHERE stream_id=$1`, values, (q_err, q_res) => {
+        if (q_err) return next(q_err);
+        res.json(q_res.rows);
+    })
+})
 module.exports = router;

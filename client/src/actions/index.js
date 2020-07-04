@@ -187,3 +187,13 @@ export const deleteComment = (id) => async(dispatch, getState) => {
     dispatch({ type: DELETE_COMMENT, payload: response.data });
     history.push(`/streams/${currentStream[0].sic}`);
 }
+
+
+export const deleteComments = (sid) => async(dispatch, getState) => {
+    const { currentStream } = getState().stream;
+    const response = await streams.delete(`http://localhost:8000/api/delete/stream/${sid}/comments`, {
+        sid: sid
+    });
+    dispatch({ type: DELETE_COMMENT, payload: response.data });
+    history.push(`/streams/${currentStream[0].si}`);
+}
