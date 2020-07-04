@@ -17,16 +17,9 @@ class CommentList extends Component {
         this.props.fetchComments(this.props.currentStream);
     }
 
-    /* 
-        TO DO: 
-        - Create profile page for users, that way the comment displays the 
-        image of the user
-        - Displaying nested comments:
-            - The nested comment is nested with a div with className="comments"
-            - 
-    */
+
     
-    // renderAdmin???
+    // TO DO: Administrative abilities
 
     render() {
         return (

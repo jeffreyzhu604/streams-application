@@ -30,7 +30,7 @@ class TreeNode extends Component {
 
     renderReply = () => {
         if (this.props.currentComment[0].cid == this.props.node.cid && this.props.isReply) 
-            return <CommentCreate currentComment={this.props.currentComment} />
+            return <CommentCreate currentComment={this.props.currentComment} form={this.props.currentComment} />
         else 
             return <div></div>
     }
@@ -78,7 +78,7 @@ const mapStateToProps = (state) => {
 }
 
 TreeNode.defaultProps = {
-    level: 0,
+    level: 0
 };
 
 export default connect(mapStateToProps, {

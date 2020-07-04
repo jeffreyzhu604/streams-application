@@ -22,7 +22,7 @@ class CommentCreate extends Component {
     render() {
         return (
             <div>
-                <CommentForm onSubmit={this.onSubmit} />
+                <CommentForm onSubmit={this.onSubmit} form={this.props.form}/>
             </div>
         )
     }

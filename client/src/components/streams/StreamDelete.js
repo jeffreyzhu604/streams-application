@@ -12,7 +12,8 @@ class StreamDelete extends Component {
 
     renderAction = () => {
         const { id } = this.props.match.params;
-
+        
+        // TO DO: When deleting a stream, delete the comments as well
         return (
             <React.Fragment>
                 <button 
