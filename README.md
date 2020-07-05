@@ -10,9 +10,9 @@ I wanted to expand my understanding of the core concepts of the course by adding
 - Using a different library to handle authentication such as Auth0. Once the user is authenticated, some of the data is stored into the local storage of the browser and a database that ran on my machine. The purpose for this is to set a session for each user of the web application.
 - Developed a server with Node and Express and wrote REST API's to handle all CRUD operations that involve users, streams and comments.
 - The project did not make use of any database schemas, so I developed tables for users, streams and comments. The database I chose to use for this project is PostgreSQL.
+- The ability to comment on comments, i.e. being able to handle levels of nested comments. 
 
 # Pending Features
-- The ability to comment on comments, i.e. being able to handle levels of nested comments. 
 - A user profile page to update personal information
 - A search feature to find users and streams
 - On the front page of the web application to display the streams in order of highest engagement based on the number of comments
