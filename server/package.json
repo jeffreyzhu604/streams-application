@@ -16,6 +16,6 @@
   },
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon"
+    "dev": "nodemon app.js"
   }
 }

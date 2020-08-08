@@ -17,6 +17,7 @@ I wanted to expand my understanding of the core concepts of the course by adding
 - A search feature to find users and streams
 - On the front page of the web application to display the streams in order of highest engagement based on the number of comments
 - Administrative abilities, being able to notify users of violations and deleting users streams
+- Refactor code using a microservice architecture
 - Using Docker for containerization and Kubernetes to orchestrate the containers
 - Hosted on AWS or Azure
 
