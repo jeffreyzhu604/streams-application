@@ -20,6 +20,9 @@ services:
       - PGPORT=5432
     depends_on:
       - postgres
+    # Newly added
+    ports:
+      - "8000:8000"
   client:
     stdin_open: true
     build:
@@ -28,6 +31,9 @@ services:
     volumes:
       - /app/node_modules
       - ./client:/app
+    # Newly added
+    ports:
+      - "3000:3000"
   rtmpserver:
     build:
       dockerfile: Dockerfile.dev
