@@ -16,6 +16,7 @@ pool.on('connect', () => {
                 )
                 `)
         .catch((err) => console.log(err));
+    console.log('Created users table');
 });
 
 pool.on('connect', () => {
@@ -31,6 +32,7 @@ pool.on('connect', () => {
                 )        
                 `)
         .catch((err) => console.log(err));
+    console.log('Created streams table');
 });
 
 pool.on('connect', () => {
@@ -47,6 +49,7 @@ pool.on('connect', () => {
                 )            
             `)
         .catch((err) => console.log(err));
+    console.log('Created users table');
 });
 
 // Stream routes
