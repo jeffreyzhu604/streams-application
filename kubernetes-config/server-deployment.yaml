@@ -17,6 +17,7 @@ spec:
           image: jeffreyzhu/streams-application-server
           ports:
             - containerPort: 8000
+          # Environment variables
           env:
             - name: PGUSER
               value: postgres
@@ -26,8 +27,21 @@ spec:
               value: "5432"
             - name: PGDATABASE
               value: postgres
+              # Secret object: Securely stores a piece of information
+              #                in the cluster, such as a database 
+              #                password.
+              #         
+              # Run an imperative command in the terminal to create
+              # secret for us. The following is the command:
+              #           
+              # kubectl create secret generic <secret-name> 
+              # --from-literal key=value           
             - name: PGPASSWORD
+              # This property says to get the value for this 
+              # environment variable from some configuration.
               valueFrom:
                 secretKeyRef:
+                  # <secret-name> from the kubectl command
                   name: pgpassword
+                  # key from the kubectl command
                   key: PGPASSWORD

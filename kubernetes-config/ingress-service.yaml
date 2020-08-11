@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1beta1
+# Ingress object: Exposes a set of services to the outside world.
+#
+# 1) Create an Ingress configuration file, to outline the set of
+#    routing rules.
+# 2) Feed the configuration file into kubectl.
+# 3) A single deployment will be created whose job is to both read in
+#    the Ingress configuration file and simulataneously create a pod
+#    that meets all the different routing rules.
+kind: Ingress
+metadata: 
+  name: ingress-service
+  annotations:
+    # Create an Ingress controller based on a Nginx project.
+    kubernetes.io/ingress.class: nginx
+    # Configure how the Nginx copy behaves, removes /api on the route.
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /?(.*)
+            backend:
+              serviceName: client-cluster-ip-service
+              servicePort: 3000
+          - path: /api/?(.*)
+            backend:
+              serviceName: server-cluster-ip-service
+              servicePort: 8000

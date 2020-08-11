@@ -37,6 +37,7 @@ spec:
               # inside the actual persistent volume claim. Specific
               # to postgres.
               subPath: postgres
+          # Environment variable
           env:
             - name: POSTGRES_PASSWORD
               valueFrom:
