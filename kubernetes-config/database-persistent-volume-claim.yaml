@@ -1,0 +1,15 @@
+apiVersion: v1
+# A volume claim is not an instance of storage, it is something that
+# gets attached to a pod config.
+kind: PersistentVolumeClaim
+metadata:
+  name: database-persistent-volume-claim
+spec:
+  accessModes:
+    # ReadWriteOnce: Can be used by a single node.
+    # ReadOnlyMany: Multiple nodes can read from this.
+    # ReadWriteMany: Can be read and written to by many nodes.  
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi

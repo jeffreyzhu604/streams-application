@@ -26,6 +26,6 @@ I wanted to expand my understanding of the core concepts of the course by adding
 - Redux
 - Node.js & Express.js
 - PostgreSQL
-- Docker
+- Docker & Kubernetes
 
 # Learning Outcome

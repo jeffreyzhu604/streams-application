@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+spec:
+  # TO DO: 
+  # Currently the configuration file for the Postgres deployment does not
+  # handle scaling well. Additional configuration is required.
+  replicas: 1
+  selector: 
+    matchLabels:
+      component: postgres
+  template:
+    metadata:
+      labels:
+        component: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres
+          ports:
+            - containerPort: 5432
+          # When this pod is created, it needs to request some long-term
+          # storage, or persistent volume, that meets all the requirements
+          # in the persistent volume claim.
+          #
+          # Once the long-term storage has been allocated, we need to
+          # describe how it will be used.
+          volumeMounts:
+            - name: postgres-storage
+              # Where inside the container the storage should be made
+              # available. Anything the container stores at the folder,
+              # will be stored in the volume.
+              mountPath: /var/lib/postgresql/data
+              # Any data inside the container stored inside of mountPath
+              # is going to be stored in a folder called postgres 
+              # inside the actual persistent volume claim. Specific
+              # to postgres.
+              subPath: postgres
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pgpassword
+                  key: PGPASSWORD
+      # With a volume in place that is running on a host machine and 
+      # if we have a request to write data that comes into the container
+      # Postgres is going to think that it is writing to a file system
+      # that exists inside the container, but in reality it is going to
+      # be a volume that exists outside on the host machine.
+      #
+      # Sets up the request on the pod to reach out to Kubernetes that
+      # it needs some long-term storage.
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: database-persistent-volume-claim

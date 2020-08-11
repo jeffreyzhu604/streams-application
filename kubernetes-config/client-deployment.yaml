@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deployment
+spec:
+  replicas: 3
+  # The selector below and label inside the template is how the 
+  # deployment is going identify the different pods it's supposed
+  # manage. This also allows Kubernetes to identify the correct 
+  # number of pods are active.
+  selector:
+    matchLabels:
+    # The component of our application that the deployment is going to
+    # managing is going to be web.
+      component: web
+  # Pod template
+  template:
+    metadata:
+      labels:
+        component: web
+    spec:
+    # Specify the different containers running inside each pod.
+      containers:
+        - name: client
+          image: jeffreyzhu/streams-application-client
+          ports:
+            - containerPort: 3000
