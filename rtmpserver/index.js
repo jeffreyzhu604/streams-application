@@ -7,6 +7,7 @@ const config = {
     ping: 30,
     ping_timeout: 60
   },
+  // Route from the browser
   http: {
     port: 8001,
     allow_origin: '*'
