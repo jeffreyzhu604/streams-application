@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rtmp-server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: rtmp-server
+  template:
+    metadata: 
+      labels:
+        component: rtmp-server
+    spec:
+      containers:
+        - name: rtmp-server
+          image: jeffreyzhu/streams-application-rtmp-server
+          ports:
+            - containerPort: 8001
+    

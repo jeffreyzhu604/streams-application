@@ -25,6 +25,13 @@ class StreamShow extends Component {
         this.player.destroy();
     }
 
+    /*
+        To get the stream playing on the application:
+        - Download OBS Studio
+        - Setting -> Stream
+            - URL: rtmp://localhost/live
+            - Stream Key: x (id of stream)
+    */
     buildPlayer() {
         if (this.player || !this.props.stream) {
             return;
